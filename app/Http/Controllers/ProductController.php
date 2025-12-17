@@ -13,15 +13,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // Traer todos los productos paginados
+        $products = Product::paginate(10);
+        if ($products) {
+            return response()->json($products);
+        }
+        return response()->json([
+            'message' => 'No se encontraron productos',
+        ], 404);
     }
 
     /**
@@ -37,15 +36,13 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
+        // Traer un producto por id
+        if ($product) {
+            return response()->json($product);
+        }
+        return response()->json([
+            'message' => 'No se encontro el producto',
+        ], 404);
     }
 
     /**
