@@ -17,12 +17,14 @@ class ProductSeeder extends Seeder
             'image_path' => 'karamelos.jpg',
             'price_for_kg' => 50,
             'stock_quantity' => 10,
-        ], [
+        ]);
+        Product::create([
             'name' => 'Chicles',
             'image_path' => 'chicles.jpg',
             'price_for_kg' => 40,
             'stock_quantity' => 3,
-        ], [
+        ]);
+        Product::create([
             'name' => 'Chicles de menta',
             'image_path' => 'chicles_menta.jpg',
             'price_for_kg' => 35,
