@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image_path');
-            $table->float('price_for_kg');
-            $table->integer('stock_quantity');
+            $table->decimal('price_for_kg', 10, 2);
+            $table->decimal('stock_quantity', 10, 2);
             $table->timestamps();
         });
     }
