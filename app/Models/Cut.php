@@ -16,5 +16,11 @@ class Cut extends Model
         'card_counted',
         'total_counted',
         'difference',
+        'lot_id',
     ];
+
+    public function lot()
+    {
+        return $this->belongsTo(Lot::class);
+    }
 }

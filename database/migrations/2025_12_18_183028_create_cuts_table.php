@@ -32,7 +32,8 @@ return new class extends Migration
 
             // Diferencia
             $table->decimal('difference', 10, 2);
-            
+            // Relacion con los lotes
+            $table->foreignId('lot_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
