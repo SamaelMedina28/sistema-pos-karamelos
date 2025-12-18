@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->string('clerk');
+            $table->string('client');
+            $table->decimal('total', 10, 2);
+            $table->decimal('cash', 10, 2);
+            $table->decimal('card', 10, 2);
+            $table->decimal('change', 10, 2);
+            // A que lote pertenece
+            $table->foreignId('lot_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
