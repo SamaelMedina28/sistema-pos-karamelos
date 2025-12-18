@@ -16,7 +16,7 @@ class ProductController extends Controller
         // Traer todos los productos paginados
         $products = Product::paginate(10);
         if ($products) {
-            return response()->json($products);
+            return response()->json($products, 200);
         }
         return response()->json([
             'message' => 'No se encontraron productos',
@@ -28,7 +28,12 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $data = $request->validated();
+        if ($request->hasFile('image_path')) {
+            $data['image_path'] = $request->file('image_path')->store('products');
+        }
+        $product = Product::create($data);
+        return response()->json($product, 201);
     }
 
     /**
@@ -38,7 +43,7 @@ class ProductController extends Controller
     {
         // Traer un producto por id
         if ($product) {
-            return response()->json($product);
+            return response()->json($product, 200);
         }
         return response()->json([
             'message' => 'No se encontro el producto',
