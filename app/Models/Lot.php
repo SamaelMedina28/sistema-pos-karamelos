@@ -12,4 +12,14 @@ class Lot extends Model
         'total_card',
         'difference',
     ];
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function cuts()
+    {
+        return $this->hasMany(Cut::class);
+    }
 }
