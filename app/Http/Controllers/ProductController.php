@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -63,6 +64,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        //eliminar la imagen del producto
+        if ($product->image_path && Storage::disk('public')->exists($product->image_path)) {
+            Storage::disk('public')->delete($product->image_path);
+        }
+        $product->delete();
+        return response()->json([
+            'message' => 'Producto eliminado correctamente',
+        ], 200);
     }
 }
