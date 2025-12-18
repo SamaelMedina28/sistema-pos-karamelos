@@ -11,7 +11,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'image_path' => [
+                'nullable',
+                $this->hasFile('image_path') ? 'image|mimes:jpeg,png,jpg,gif|max:2048' : ' ',
+            ],
+            'price_for_kg' => 'required|numeric',
+            'stock_quantity' => 'required|numeric',
         ];
     }
 }

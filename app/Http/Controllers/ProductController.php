@@ -56,7 +56,21 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $data = $request->validated();
+        // Si nos manda una imagen
+        if ($request->hasFile('image_path')) {
+            // 1. Borrar la anterior
+            if ($product->image_path && Storage::disk('public')->exists($product->image_path)) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+            // 2. Guardar la nueva
+            $data['image_path'] = $request->file('image_path')->store('products', 'public');
+        } else {
+            // Si no nos manda una imagen quitamos el campo
+            unset($data['image_path']);
+        }
+        $product->update($data);
+        return response()->json($product, 200);
     }
 
     /**

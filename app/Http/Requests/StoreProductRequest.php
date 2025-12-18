@@ -23,7 +23,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'image_path' => 'required|string|max:255',
+            'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'price_for_kg' => 'required|numeric',
             'stock_quantity' => 'required|numeric',
         ];
