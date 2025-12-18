@@ -12,15 +12,9 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $sales = Sale::with('sale_details.product')->orderBy('id', 'desc')->paginate();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($sales, 200);
     }
 
     /**
@@ -36,30 +30,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Sale $sale)
-    {
-        //
+        $sale = $sale->load('sale_details.product');
+        return response()->json($sale, 200);
     }
 }
