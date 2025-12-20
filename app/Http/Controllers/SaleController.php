@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSaleRequest;
 use App\Models\Lot;
 use App\Models\Product;
 use App\Models\Sale;
@@ -45,22 +46,8 @@ class SaleController extends Controller
      *  ]
      * }
      */
-    public function store(Request $request)
+    public function store(StoreSaleRequest $request)
     {
-        //* Validaciones
-        $validator = Validator::make($request->all(), [
-            'clerk' => 'required|string|max:255',
-            'client' => 'required|string|max:255',
-            'payment_method' => 'required|in:cash,card,mix',
-            'cash' => 'required_if:payment_method,cash,mix|numeric',
-            'card' => 'required_if:payment_method,card,mix|numeric',
-            'sale_details' => 'required|array',
-            'sale_details.*.product_id' => 'required|exists:products,id',
-            'sale_details.*.grams' => 'required|numeric|min:0.1',
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
         try {
             $sale = DB::transaction(function () use ($request) {
                 // Sacamos el id de todos los productos que nos envian
