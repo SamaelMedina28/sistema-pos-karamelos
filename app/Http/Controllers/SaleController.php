@@ -8,9 +8,13 @@ use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Services\SaleService;
 
 class SaleController extends Controller
 {
+    public function __construct(private SaleService $saleService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
