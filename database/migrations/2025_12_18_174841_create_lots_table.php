@@ -17,7 +17,6 @@ return new class extends Migration
             $table->decimal('total_cash', 10, 2);
             $table->decimal('total_card', 10, 2);
             $table->decimal('difference', 10, 2);
-            $table->integer('stock_quantity');
             $table->timestamps();
         });
     }
