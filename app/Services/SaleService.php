@@ -64,12 +64,16 @@ class SaleService
             // Saledetails contiene el array que nos mandan
             foreach ($request->sale_details as $saleDetail) {
                 $product = $products->get($saleDetail['product_id']);
-                $sale->sale_details()->create([
-                    'product_id' => $saleDetail['product_id'],
+                $sale->products()->attach($saleDetail['product_id'], [
                     'grams' => $saleDetail['grams'],
                     'amount' => round($saleDetail['grams'] * $product->price_for_kg / 1000, 2),
                 ]);
-                $product->decrement('stock_quantity', $saleDetail['grams']);
+                // ! Verificar que el stock sea suficiente
+                if ($product->stock_quantity < $saleDetail['grams'] / 1000) {
+                    throw new \Exception("No hay stock suficiente para el producto: " . $product->name);
+                }
+                // Stock esta en kilos
+                $product->decrement('stock_quantity', $saleDetail['grams'] / 1000);
             }
             // Actualizamos el lote
             $lastLot->update([
