@@ -26,8 +26,11 @@ class SaleService
             // Redondeamos el total
             $total = round($total, 2);
             // Verificamos que haya pagado lo suficiente
-            if (($request->cash ?? 0) + ($request->card ?? 0) < $total) {
-                throw new \Exception("No se ha pagado lo suficiente: Total: $total, Pagado: $request->cash + $request->card");
+
+            $paymentData = $this->isValidPayment($total, $request->cash, $request->card, $request->payment_method);
+            
+            if (!$paymentData['valid']) {
+                throw new \Exception("No se ha pagado lo suficiente: Total: $total, Pagado: Cash: " . $paymentData['cash'] . " Card: " . $paymentData['card']);
             }
             // Checamos con que lote lo asignamos (el ultimo que haya, si no hay creamos uno)
             $lastLot = Lot::latest('id')->first() ?: Lot::create([
@@ -83,5 +86,30 @@ class SaleService
             ]);
             return $sale;
         });
+    }
+
+    // Verificamos que haya pagado lo suficiente segun el metodo de pago
+    private function isValidPayment($total, $cash, $card, $method): array
+    {
+        switch ($method) {
+            case 'cash':
+                return [
+                    'cash' => $cash,
+                    'card' => 0,
+                    'valid' => $total <= $cash,
+                ];
+            case 'card':
+                return [
+                    'cash' => 0,
+                    'card' => $card,
+                    'valid' => $total <= $card,
+                ];
+            default:
+                return [
+                    'cash' => $cash,
+                    'card' => $card,
+                    'valid' => $total <= $cash + $card,
+                ];
+        }
     }
 }
