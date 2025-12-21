@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSaleRequest;
+use App\Models\Lot;
+use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use App\Services\SaleService;
 
 class SaleController extends Controller
 {
@@ -12,23 +18,43 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
+        $sales = Sale::with('sale_details.product')->orderBy('id', 'desc')->paginate();
+
+        return response()->json($sales, 200);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Formato JSON que espera la API
+     * {
+     *  "clerk": "Juan",
+     *  "client": "Pedro",
+     *  "payment_method": "cash",
+     *  "cash": 10,
+     *  "card": 0,
+     *  "sale_details": [
+     *      {
+     *          "product_id": 1,
+     *          "grams": 12,
+     *      },
+     *      {
+     *          "product_id": 2,
+     *          "grams": 32,
+     *      }
+     *  ]
+     * }
      */
-    public function create()
+    public function store(StoreSaleRequest $request, SaleService $saleService)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        try {
+            $sale = $saleService->createSale($request);
+            return response()->json($sale->load('products'), 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'trace' => $th->getTraceAsString(),
+                'status' => 500,
+            ], 500);
+        }
     }
 
     /**
@@ -36,30 +62,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Sale $sale)
-    {
-        //
+        $sale = $sale->load('sale_details.product');
+        return response()->json($sale, 200);
     }
 }

@@ -20,4 +20,10 @@ class Sale extends Model
     {
         return $this->belongsTo(Lot::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'sale_details', 'sale_id', 'product_id')
+            ->withPivot('grams', 'amount');
+    }
 }
