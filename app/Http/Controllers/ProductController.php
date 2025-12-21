@@ -38,20 +38,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        // Traer un producto por id
-        if ($product) {
-            return response()->json($product, 200);
-        }
-        return response()->json([
-            'message' => 'No se encontro el producto',
-        ], 404);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateProductRequest $request, Product $product)
