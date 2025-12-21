@@ -46,8 +46,8 @@ class SaleController extends Controller
     public function store(StoreSaleRequest $request, SaleService $saleService)
     {
         try {
-            $sale = $saleService->createSale($request->all());
-            return response()->json($sale->load('sale_details.product'), 201);
+            $sale = $saleService->createSale($request);
+            return response()->json($sale->load('products'), 201);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
