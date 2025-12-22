@@ -16,9 +16,9 @@ class SaleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($lot_id)
     {
-        $sales = Sale::with('sale_details.product')->orderBy('id', 'desc')->paginate();
+        $sales = Sale::with('sale_details.product')->where('lot_id', $lot_id)->orderBy('id', 'desc')->paginate();
 
         return response()->json($sales, 200);
     }

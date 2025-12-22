@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Validator;
 class CutController extends Controller
 {
     // ? Ver todos los cortes de un dia
-    public function index($date)
+    public function index($lot_id)
     {
-        return response()->json(Cut::where('created_at', 'LIKE', $date)->get(), 200);
+        return response()->json(Cut::where('lot_id', $lot_id)->get(), 200);
     }
     // ? Crear un corte
     public function store(Request $request)
