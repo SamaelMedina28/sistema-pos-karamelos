@@ -16,9 +16,11 @@ class SaleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($lot_id)
+    public function index(Request $request)
     {
-        $sales = Sale::with('sale_details.product')->where('lot_id', $lot_id)->orderBy('id', 'desc')->paginate();
+        $sales = Sale::when($request->has('lot_id'), function ($query) use ($request) {
+            return $query->where('lot_id', $request->lot_id);
+        })->orderBy('id', 'desc')->get();
 
         return response()->json($sales, 200);
     }
@@ -62,7 +64,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        $sale = $sale->load('sale_details.product');
+        $sale = $sale->load('products');
         return response()->json($sale, 200);
     }
 }

@@ -19,18 +19,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/cut/{id}', [CutController::class, 'show']); // Ver un corte
 
     // ? Ventas
-    Route::get('/sales/{lot_id}', [SaleController::class, 'index']); // Ver todas las ventas de un lote
+    Route::get('/sales', [SaleController::class, 'index']); // Ver todas las ventas de un lote
     Route::post('/sales', [SaleController::class, 'store']); // Crear una venta
-    Route::get('/sale/{id}', [SaleController::class, 'show']); // Ver una venta
+    Route::get('/sales/{sale}', [SaleController::class, 'show']); // Ver una venta
     
     // ? Productos
     Route::get('/products',[ProductController::class, 'index']);
 
     // ? Lotes
     Route::get('/lots', [LotController::class, 'index']);
-    Route::get('/lot/{id}', [LotController::class, 'show']);
+    Route::get('/lots/{lot}', [LotController::class, 'show']);
 
     Route::middleware('admin')->group(function () {
-        Route::apiResource('products', ProductController::class)->except(['index']);
+        Route::post('/products/{product}', [ProductController::class, 'update']);
+        Route::apiResource('products', ProductController::class)->except(['index', 'update']);
     });
 });
