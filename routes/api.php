@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CutController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\LotController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -24,6 +25,11 @@ Route::middleware('auth')->group(function () {
     
     // ? Productos
     Route::get('/products',[ProductController::class, 'index']);
+
+    // ? Lotes
+    Route::get('/lots', [LotController::class, 'index']);
+    Route::get('/lot/{id}', [LotController::class, 'show']);
+
     Route::middleware('admin')->group(function () {
         Route::apiResource('products', ProductController::class)->except(['index']);
     });
