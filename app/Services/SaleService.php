@@ -33,12 +33,7 @@ class SaleService
                 throw new \Exception("No se ha pagado lo suficiente: Total: $total, Pagado: Cash: " . $paymentData['cash'] . " Card: " . $paymentData['card']);
             }
             // Checamos con que lote lo asignamos (el ultimo que haya, si no hay creamos uno)
-            $lastLot = Lot::latest('id')->first() ?: Lot::create([
-                'total' => 0,
-                'total_cash' => 0,
-                'total_card' => 0,
-                'difference' => 0
-            ]);
+            $lastLot = $this->getLastLot();
             // ~ Ejemplo
             // total = 100
             // card = 80
@@ -111,5 +106,15 @@ class SaleService
                     'valid' => $total <= $cash + $card,
                 ];
         }
+    }
+
+
+    public function getLastLot(){
+        return Lot::latest('id')->first() ?: Lot::create([
+            'total' => 0,
+            'total_cash' => 0,
+            'total_card' => 0,
+            'difference' => 0
+        ]);
     }
 }
