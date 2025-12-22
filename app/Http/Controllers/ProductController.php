@@ -31,7 +31,7 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('image_path')) {
-            $data['image_path'] = $request->file('image_path')->store('products');
+            $data['image_path'] = $request->file('image_path')->store('products', 'public');
         }
         $product = Product::create($data);
         return response()->json($product, 201);
