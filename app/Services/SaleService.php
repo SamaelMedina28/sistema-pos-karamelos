@@ -112,4 +112,14 @@ class SaleService
                 ];
         }
     }
+
+
+    public static function getLastLot(){
+        return Lot::latest('id')->first() ?: Lot::create([
+            'total' => 0,
+            'total_cash' => 0,
+            'total_card' => 0,
+            'difference' => 0
+        ]);
+    }
 }
