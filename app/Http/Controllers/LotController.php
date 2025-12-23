@@ -8,9 +8,11 @@ use App\Models\Lot;
 class LotController extends Controller
 {
     // ? Ver todos los lotes
-    public function index()
+    public function index(Request $request)
     {
-        $lots = Lot::with('cuts', 'sales.products')->get();
+        $lots = Lot::when($request->date, function ($query) use ($request) {
+            $query->where('created_at', 'like', "%{$request->date}%");
+        })->with('cuts', 'sales')->orderBy('id', 'desc')->paginate(10);
         return response()->json($lots, 200);
     }
 
