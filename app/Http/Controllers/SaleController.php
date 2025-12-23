@@ -18,9 +18,9 @@ class SaleController extends Controller
      */
     public function index(Request $request)
     {
-        $sales = Sale::when($request->has('lot_id'), function ($query) use ($request) {
-            return $query->where('lot_id', $request->lot_id);
-        })->orderBy('id', 'desc')->get();
+        $sales = Sale::when($request->has('date'), function ($query) use ($request) {
+            return $query->where('created_at', 'like', "%{$request->date}%");
+        })->orderBy('id', 'desc')->paginate(10);
 
         return response()->json($sales, 200);
     }
