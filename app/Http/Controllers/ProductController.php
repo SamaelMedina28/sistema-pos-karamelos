@@ -37,6 +37,11 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
+    public function show(Product $product)
+    {
+        return response()->json($product, 200);
+    }
+
     /**
      * Update the specified resource in storage.
      */
