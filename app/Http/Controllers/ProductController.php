@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -12,10 +13,14 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Traer todos los productos paginados
-        $products = Product::paginate(10);
+
+        if ($request->has('all')) {
+            $products = Product::all();
+        } else {
+            $products = Product::paginate(10);
+        }
         if ($products) {
             return response()->json($products, 200);
         }
