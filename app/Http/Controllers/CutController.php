@@ -11,12 +11,52 @@ use Illuminate\Support\Facades\Validator;
 
 class CutController extends Controller
 {
-    // ? Ver todos los cortes de un dia
+    /**
+     * @OA\Get(
+     *     path="/api/cuts/{lot_id}",
+     *     summary="Ver todos los cortes de un lote",
+     *     tags={"Cortes"},
+     *     @OA\Parameter(
+     *         name="lot_id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del lote",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de cortes"
+     *     )
+     * )
+     */
     public function index($lot_id)
     {
         return response()->json(Cut::where('lot_id', $lot_id)->get(), 200);
     }
-    // ? Crear un corte
+    /**
+     * @OA\Post(
+     *     path="/api/cuts",
+     *     summary="Crear un corte (X o Z)",
+     *     tags={"Cortes"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"type","cash_counted","card_counted"},
+     *             @OA\Property(property="type", type="string", enum={"x", "z"}, example="z"),
+     *             @OA\Property(property="cash_counted", type="number", example=100.50),
+     *             @OA\Property(property="card_counted", type="number", example=200.00)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Corte creado exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error de validación"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -34,7 +74,7 @@ class CutController extends Controller
             'difference' => 0
         ]);
         $totalCounted = $request->cash_counted + $request->card_counted;
-        if($request->type == 'z'){
+        if ($request->type == 'z') {
             $lastLot->update([
                 'difference' => $totalCounted - $lastLot->total
             ]);

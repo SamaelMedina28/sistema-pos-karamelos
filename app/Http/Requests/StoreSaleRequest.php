@@ -4,6 +4,29 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StoreSaleRequest",
+ *     type="object",
+ *     title="Petición para crear venta",
+ *     required={"clerk", "client", "payment_method", "sale_details"},
+ *     @OA\Property(property="clerk", type="string", description="Nombre del vendedor"),
+ *     @OA\Property(property="client", type="string", description="Nombre del cliente"),
+ *     @OA\Property(property="payment_method", type="string", enum={"cash","card","mix"}, description="Método de pago"),
+ *     @OA\Property(property="cash", type="number", format="float", description="Monto en efectivo"),
+ *     @OA\Property(property="card", type="number", format="float", description="Monto en tarjeta"),
+ *     @OA\Property(
+ *         property="sale_details",
+ *         type="array",
+ *         @OA\Items(
+ *             type="object",
+ *             required={"product_id", "grams"},
+ *             @OA\Property(property="product_id", type="integer", description="ID del producto"),
+ *             @OA\Property(property="grams", type="number", format="float", description="Gramos vendidos")
+ *         )
+ *     )
+ * )
+ */
 class StoreSaleRequest extends FormRequest
 {
     /**
