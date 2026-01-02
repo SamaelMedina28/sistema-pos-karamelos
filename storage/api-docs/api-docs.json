@@ -1,0 +1,719 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SAAS 'Karamelos'",
+        "description": "Sistema de punto de venta para local de 'Karamelos'",
+        "contact": {
+            "email": "samaelortiz2218@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0",
+        "x-logo": {
+            "url": "https://via.placeholder.com/190x90.png?text=SAAS 'Karamelos'"
+        }
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Registrar un nuevo usuario",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Iniciar sesión",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "test@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login exitoso, retorna usuario y cookie token"
+                    },
+                    "401": {
+                        "description": "Credenciales inválidas"
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Obtener usuario autenticado",
+                "operationId": "31234491f21a35d2de09d4fae7ee13c4",
+                "responses": {
+                    "200": {
+                        "description": "Información del usuario"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cerrar sesión",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Logout exitoso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cuts/{lot_id}": {
+            "get": {
+                "tags": [
+                    "Cortes"
+                ],
+                "summary": "Ver todos los cortes de un lote",
+                "operationId": "023efb7fcc2ec88a5dcaa6319f724545",
+                "parameters": [
+                    {
+                        "name": "lot_id",
+                        "in": "path",
+                        "description": "ID del lote",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de cortes"
+                    }
+                }
+            }
+        },
+        "/api/cuts": {
+            "post": {
+                "tags": [
+                    "Cortes"
+                ],
+                "summary": "Crear un corte (X o Z)",
+                "operationId": "5a8c1bd890e7f48eb21b8eba319f0543",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "cash_counted",
+                                    "card_counted"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "x",
+                                            "z"
+                                        ],
+                                        "example": "z"
+                                    },
+                                    "cash_counted": {
+                                        "type": "number",
+                                        "example": 100.5
+                                    },
+                                    "card_counted": {
+                                        "type": "number",
+                                        "example": 200
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Corte creado exitosamente"
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/lots": {
+            "get": {
+                "tags": [
+                    "Lotes"
+                ],
+                "summary": "Listar lotes",
+                "operationId": "71e28819913f49a204dc07070b8e5d71",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Filtrar por fecha (YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de lotes paginada"
+                    }
+                }
+            }
+        },
+        "/api/lots/{id}": {
+            "get": {
+                "tags": [
+                    "Lotes"
+                ],
+                "summary": "Ver detalles de un lote",
+                "operationId": "398b1271ba26993222e87f9d9a41f7ea",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del lote",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del lote con cortes y ventas"
+                    },
+                    "404": {
+                        "description": "Lote no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Listar productos",
+                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
+                "parameters": [
+                    {
+                        "name": "all",
+                        "in": "query",
+                        "description": "Si está presente, retorna todos los productos sin paginación",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de productos (paginada o completa)"
+                    },
+                    "404": {
+                        "description": "No se encontraron productos"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Crear un nuevo producto",
+                "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Producto creado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Obtener un producto específico",
+                "operationId": "7ab21ddb713501f3d4c2914892c02a21",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del producto"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Actualizar un producto existente",
+                "operationId": "b4b789a4a3d0c47897f43991a5f12372",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Producto actualizado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Eliminar un producto",
+                "operationId": "e80a6ca46716acee6b47ea1ac91663c0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Producto eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/sales": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Listar ventas",
+                "operationId": "419ebb078c83262b05f7c639ae8b2c21",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Filtrar por fecha (YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de ventas paginada"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Registrar una nueva venta",
+                "operationId": "51f42c056032d143981f26f6c0888f24",
+                "requestBody": {
+                    "description": "Datos de la venta y productos",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "clerk",
+                                    "client",
+                                    "payment_method",
+                                    "cash",
+                                    "card",
+                                    "sale_details"
+                                ],
+                                "properties": {
+                                    "clerk": {
+                                        "type": "string",
+                                        "example": "Juan"
+                                    },
+                                    "client": {
+                                        "type": "string",
+                                        "example": "Pedro"
+                                    },
+                                    "payment_method": {
+                                        "type": "string",
+                                        "enum": [
+                                            "cash",
+                                            "card",
+                                            "mixed"
+                                        ],
+                                        "example": "cash"
+                                    },
+                                    "cash": {
+                                        "type": "number",
+                                        "example": 10
+                                    },
+                                    "card": {
+                                        "type": "number",
+                                        "example": 0
+                                    },
+                                    "sale_details": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "product_id",
+                                                "grams"
+                                            ],
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "grams": {
+                                                    "type": "number",
+                                                    "example": 120
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Venta creada exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/sales/{id}": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Ver detalles de una venta",
+                "operationId": "b352670063e2f09edbfb74f39aef9b56",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la venta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la venta con productos"
+                    },
+                    "404": {
+                        "description": "Venta no encontrada"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StoreProductRequest": {
+                "title": "Petición para crear producto",
+                "required": [
+                    "name",
+                    "image_path",
+                    "price_for_kg",
+                    "stock_quantity"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre del producto",
+                        "type": "string"
+                    },
+                    "image_path": {
+                        "description": "Imagen del producto",
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "price_for_kg": {
+                        "description": "Precio por Kg",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "stock_quantity": {
+                        "description": "Cantidad en stock (g/kg)",
+                        "type": "number",
+                        "format": "float"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreSaleRequest": {
+                "title": "Petición para crear venta",
+                "required": [
+                    "clerk",
+                    "client",
+                    "payment_method",
+                    "sale_details"
+                ],
+                "properties": {
+                    "clerk": {
+                        "description": "Nombre del vendedor",
+                        "type": "string"
+                    },
+                    "client": {
+                        "description": "Nombre del cliente",
+                        "type": "string"
+                    },
+                    "payment_method": {
+                        "description": "Método de pago",
+                        "type": "string",
+                        "enum": [
+                            "cash",
+                            "card",
+                            "mix"
+                        ]
+                    },
+                    "cash": {
+                        "description": "Monto en efectivo",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "card": {
+                        "description": "Monto en tarjeta",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "sale_details": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "product_id",
+                                "grams"
+                            ],
+                            "properties": {
+                                "product_id": {
+                                    "description": "ID del producto",
+                                    "type": "integer"
+                                },
+                                "grams": {
+                                    "description": "Gramos vendidos",
+                                    "type": "number",
+                                    "format": "float"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateProductRequest": {
+                "title": "Petición para actualizar producto",
+                "required": [
+                    "name",
+                    "price_for_kg",
+                    "stock_quantity"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre del producto",
+                        "type": "string"
+                    },
+                    "image_path": {
+                        "description": "Imagen del producto (opcional)",
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    },
+                    "price_for_kg": {
+                        "description": "Precio por Kg",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "stock_quantity": {
+                        "description": "Cantidad en stock (g/kg)",
+                        "type": "number",
+                        "format": "float"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticación",
+            "description": "Autenticación"
+        },
+        {
+            "name": "Cortes",
+            "description": "Cortes"
+        },
+        {
+            "name": "Lotes",
+            "description": "Lotes"
+        },
+        {
+            "name": "Productos",
+            "description": "Productos"
+        },
+        {
+            "name": "Ventas",
+            "description": "Ventas"
+        }
+    ]
+}

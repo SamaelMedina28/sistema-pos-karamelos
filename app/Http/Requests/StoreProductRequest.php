@@ -4,6 +4,18 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StoreProductRequest",
+ *     type="object",
+ *     title="Petición para crear producto",
+ *     required={"name", "image_path", "price_for_kg", "stock_quantity"},
+ *     @OA\Property(property="name", type="string", description="Nombre del producto"),
+ *     @OA\Property(property="image_path", type="string", format="binary", description="Imagen del producto"),
+ *     @OA\Property(property="price_for_kg", type="number", format="float", description="Precio por Kg"),
+ *     @OA\Property(property="stock_quantity", type="number", format="float", description="Cantidad en stock (g/kg)")
+ * )
+ */
 class StoreProductRequest extends FormRequest
 {
     /**
