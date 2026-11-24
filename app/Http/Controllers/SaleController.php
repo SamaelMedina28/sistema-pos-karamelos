@@ -18,6 +18,7 @@ class SaleController extends Controller
      *     path="/api/sales",
      *     summary="Listar ventas",
      *     tags={"Ventas"},
+     *     security={{"cookieAuth":{}}},
      *     @OA\Parameter(
      *         name="date",
      *         in="query",
@@ -45,6 +46,7 @@ class SaleController extends Controller
      *     path="/api/sales",
      *     summary="Registrar una nueva venta",
      *     tags={"Ventas"},
+     *     security={{"cookieAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         description="Datos de la venta y productos",
@@ -96,26 +98,8 @@ class SaleController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/sales/{id}",
-     *     summary="Ver detalles de una venta",
-     *     tags={"Ventas"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la venta",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Detalles de la venta con productos"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Venta no encontrada"
-     *     )
-     * )
+     * Ver detalles de una venta (ruta deshabilitada en routes/api.php,
+     * por eso no se documenta en Swagger).
      */
     public function show(Sale $sale)
     {

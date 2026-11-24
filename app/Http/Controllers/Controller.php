@@ -20,6 +20,14 @@ namespace App\Http\Controllers;
  *         url="https://opensource.org/licenses/MIT"
  *     )
  * )
+ *
+ * @OA\SecurityScheme(
+ *     securityScheme="cookieAuth",
+ *     type="apiKey",
+ *     in="cookie",
+ *     name="token",
+ *     description="JWT guardado en la cookie HttpOnly `token`. Se obtiene llamando a POST /api/login desde este mismo origen; el navegador la envía automáticamente."
+ * )
  */
 abstract class Controller
 {

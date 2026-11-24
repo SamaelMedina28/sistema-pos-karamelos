@@ -130,7 +130,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "cookieAuth": []
                     }
                 ]
             }
@@ -149,7 +149,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "cookieAuth": []
                     }
                 ]
             }
@@ -160,6 +160,7 @@
                     "Cortes"
                 ],
                 "summary": "Ver todos los cortes de un lote",
+                "description": "Requiere rol **admin** (si no, responde 401).",
                 "operationId": "023efb7fcc2ec88a5dcaa6319f724545",
                 "parameters": [
                     {
@@ -176,7 +177,12 @@
                     "200": {
                         "description": "Lista de cortes"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             }
         },
         "/api/cuts": {
@@ -226,7 +232,46 @@
                     "400": {
                         "description": "Error de validación"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cut/{id}": {
+            "get": {
+                "tags": [
+                    "Cortes"
+                ],
+                "summary": "Ver un corte",
+                "description": "Requiere rol **admin** (si no, responde 401).",
+                "operationId": "4ba6b788acf543b4e38711d030b37404",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del corte",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del corte"
+                    },
+                    "404": {
+                        "description": "Corte no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             }
         },
         "/api/lots": {
@@ -235,6 +280,7 @@
                     "Lotes"
                 ],
                 "summary": "Listar lotes",
+                "description": "Requiere rol **admin** (si no, responde 401).",
                 "operationId": "71e28819913f49a204dc07070b8e5d71",
                 "parameters": [
                     {
@@ -252,7 +298,12 @@
                     "200": {
                         "description": "Lista de lotes paginada"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             }
         },
         "/api/lots/{id}": {
@@ -280,7 +331,12 @@
                     "404": {
                         "description": "Lote no encontrado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             }
         },
         "/api/products": {
@@ -308,13 +364,19 @@
                     "404": {
                         "description": "No se encontraron productos"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
                     "Productos"
                 ],
                 "summary": "Crear un nuevo producto",
+                "description": "Requiere rol **admin** (si no, responde 401).",
                 "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
                 "requestBody": {
                     "required": true,
@@ -333,7 +395,12 @@
                     "422": {
                         "description": "Error de validación"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             }
         },
         "/api/products/{id}": {
@@ -342,6 +409,7 @@
                     "Productos"
                 ],
                 "summary": "Obtener un producto específico",
+                "description": "Requiere rol **admin** (si no, responde 401).",
                 "operationId": "7ab21ddb713501f3d4c2914892c02a21",
                 "parameters": [
                     {
@@ -361,13 +429,19 @@
                     "404": {
                         "description": "Producto no encontrado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
                     "Productos"
                 ],
                 "summary": "Actualizar un producto existente",
+                "description": "Requiere rol **admin** (si no, responde 401).",
                 "operationId": "b4b789a4a3d0c47897f43991a5f12372",
                 "parameters": [
                     {
@@ -400,13 +474,19 @@
                     "404": {
                         "description": "Producto no encontrado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "Productos"
                 ],
                 "summary": "Eliminar un producto",
+                "description": "Requiere rol **admin** (si no, responde 401).",
                 "operationId": "e80a6ca46716acee6b47ea1ac91663c0",
                 "parameters": [
                     {
@@ -426,7 +506,12 @@
                     "404": {
                         "description": "Producto no encontrado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             }
         },
         "/api/sales": {
@@ -452,7 +537,12 @@
                     "200": {
                         "description": "Lista de ventas paginada"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -536,35 +626,12 @@
                     "500": {
                         "description": "Error del servidor"
                     }
-                }
-            }
-        },
-        "/api/sales/{id}": {
-            "get": {
-                "tags": [
-                    "Ventas"
-                ],
-                "summary": "Ver detalles de una venta",
-                "operationId": "b352670063e2f09edbfb74f39aef9b56",
-                "parameters": [
+                },
+                "security": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID de la venta",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "cookieAuth": []
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Detalles de la venta con productos"
-                    },
-                    "404": {
-                        "description": "Venta no encontrada"
-                    }
-                }
+                ]
             }
         }
     },
@@ -691,6 +758,14 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "cookieAuth": {
+                "type": "apiKey",
+                "description": "JWT guardado en la cookie HttpOnly `token`. Se obtiene llamando a POST /api/login desde este mismo origen; el navegador la envía automáticamente.",
+                "name": "token",
+                "in": "cookie"
             }
         }
     },

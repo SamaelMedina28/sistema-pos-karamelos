@@ -15,6 +15,7 @@ class ProductController extends Controller
      *     path="/api/products",
      *     summary="Listar productos",
      *     tags={"Productos"},
+     *     security={{"cookieAuth":{}}},
      *     @OA\Parameter(
      *         name="all",
      *         in="query",
@@ -53,6 +54,8 @@ class ProductController extends Controller
      *     path="/api/products",
      *     summary="Crear un nuevo producto",
      *     tags={"Productos"},
+     *     security={{"cookieAuth":{}}},
+     *     description="Requiere rol **admin** (si no, responde 401).",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
@@ -87,6 +90,8 @@ class ProductController extends Controller
      *     path="/api/products/{id}",
      *     summary="Obtener un producto específico",
      *     tags={"Productos"},
+     *     security={{"cookieAuth":{}}},
+     *     description="Requiere rol **admin** (si no, responde 401).",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -114,6 +119,8 @@ class ProductController extends Controller
      *     path="/api/products/{id}",
      *     summary="Actualizar un producto existente",
      *     tags={"Productos"},
+     *     security={{"cookieAuth":{}}},
+     *     description="Requiere rol **admin** (si no, responde 401).",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -168,6 +175,8 @@ class ProductController extends Controller
      *     path="/api/products/{id}",
      *     summary="Eliminar un producto",
      *     tags={"Productos"},
+     *     security={{"cookieAuth":{}}},
+     *     description="Requiere rol **admin** (si no, responde 401).",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

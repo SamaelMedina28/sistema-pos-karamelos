@@ -12,6 +12,8 @@ class LotController extends Controller
      *     path="/api/lots",
      *     summary="Listar lotes",
      *     tags={"Lotes"},
+     *     security={{"cookieAuth":{}}},
+     *     description="Requiere rol **admin** (si no, responde 401).",
      *     @OA\Parameter(
      *         name="date",
      *         in="query",
@@ -38,6 +40,7 @@ class LotController extends Controller
      *     path="/api/lots/{id}",
      *     summary="Ver detalles de un lote",
      *     tags={"Lotes"},
+     *     security={{"cookieAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

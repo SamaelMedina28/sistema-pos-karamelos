@@ -126,7 +126,7 @@ class AuthController extends Controller
      *     path="/api/user",
      *     summary="Obtener usuario autenticado",
      *     tags={"Autenticación"},
-     *     security={{"bearerAuth":{}}},
+     *     security={{"cookieAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Información del usuario"
@@ -171,7 +171,7 @@ class AuthController extends Controller
      *     path="/api/logout",
      *     summary="Cerrar sesión",
      *     tags={"Autenticación"},
-     *     security={{"bearerAuth":{}}},
+     *     security={{"cookieAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Logout exitoso"

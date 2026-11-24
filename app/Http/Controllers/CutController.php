@@ -16,6 +16,8 @@ class CutController extends Controller
      *     path="/api/cuts/{lot_id}",
      *     summary="Ver todos los cortes de un lote",
      *     tags={"Cortes"},
+     *     security={{"cookieAuth":{}}},
+     *     description="Requiere rol **admin** (si no, responde 401).",
      *     @OA\Parameter(
      *         name="lot_id",
      *         in="path",
@@ -38,6 +40,7 @@ class CutController extends Controller
      *     path="/api/cuts",
      *     summary="Crear un corte (X o Z)",
      *     tags={"Cortes"},
+     *     security={{"cookieAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -99,5 +102,38 @@ class CutController extends Controller
             'lot_id' => $lastLot->id,
         ]);
         return response()->json($cut, 201);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/cut/{id}",
+     *     summary="Ver un corte",
+     *     tags={"Cortes"},
+     *     security={{"cookieAuth":{}}},
+     *     description="Requiere rol **admin** (si no, responde 401).",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del corte",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detalles del corte"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Corte no encontrado"
+     *     )
+     * )
+     */
+    public function show($id)
+    {
+        $cut = Cut::find($id);
+        if (!$cut) {
+            return response()->json(['error' => 'Cut not found'], 404);
+        }
+        return response()->json($cut, 200);
     }
 }
